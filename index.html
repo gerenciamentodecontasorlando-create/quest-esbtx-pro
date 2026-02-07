@@ -1,0 +1,1521 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BTX Provas — Treino de Questões (Offline) v2</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#111a33;
+      --card:#0f1730;
+      --card2:#0c1329;
+      --ink:#e9eefc;
+      --muted:#a9b6dd;
+      --muted2:#7f8bb3;
+      --accent:#4da3ff;
+      --good:#49d17c;
+      --bad:#ff5c7c;
+      --warn:#ffcc66;
+      --border: rgba(255,255,255,.09);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1000px 600px at 20% 10%, rgba(77,163,255,.18), transparent 60%),
+                  radial-gradient(900px 700px at 80% 30%, rgba(73,209,124,.12), transparent 55%),
+                  radial-gradient(900px 900px at 60% 90%, rgba(255,92,124,.10), transparent 60%),
+                  var(--bg);
+      color:var(--ink);
+    }
+
+    .wrap{max-width:1200px;margin:0 auto;padding:18px}
+    header{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      padding:14px 16px; background:rgba(15,23,48,.72); border:1px solid var(--border);
+      border-radius:var(--radius); box-shadow:var(--shadow); backdrop-filter: blur(10px);
+      position:sticky; top:10px; z-index:10;
+    }
+    @media (max-width: 980px){
+      header{position:relative; top:auto}
+    }
+
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(77,163,255,.9), rgba(77,163,255,.25));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 10px 30px rgba(77,163,255,.18);
+      display:grid; place-items:center; font-weight:900; letter-spacing:.5px;
+    }
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:0;color:var(--muted);font-size:12px}
+
+    .top-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    button, .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--ink);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      transition:.15s transform, .15s background, .15s border;
+      font-weight:700;
+    }
+    button:hover{transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.20)}
+    button.primary{background: rgba(77,163,255,.18); border-color: rgba(77,163,255,.35)}
+    button.primary:hover{background: rgba(77,163,255,.25)}
+    button.danger{background: rgba(255,92,124,.16); border-color: rgba(255,92,124,.35)}
+    button.good{background: rgba(73,209,124,.14); border-color: rgba(73,209,124,.35)}
+    button.ai{
+      background: linear-gradient(135deg, rgba(77,163,255,.22), rgba(73,209,124,.14));
+      border-color: rgba(77,163,255,.42);
+      box-shadow: 0 10px 30px rgba(77,163,255,.12);
+    }
+    button.ai:hover{background: linear-gradient(135deg, rgba(77,163,255,.30), rgba(73,209,124,.18));}
+
+    .grid{
+      display:grid; gap:14px;
+      grid-template-columns: 380px 1fr;
+      margin-top:14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+    }
+
+    .panel{
+      background: rgba(17,26,51,.68);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .panel h2{
+      margin:0 0 10px 0;
+      font-size:14px;
+      letter-spacing:.25px;
+      color:#dfe7ff;
+    }
+
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .field{display:flex; flex-direction:column; gap:6px; margin:8px 0}
+    label{font-size:12px; color:var(--muted)}
+    input[type="text"], select, textarea, input[type="number"]{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(12,19,41,.82);
+      color:var(--ink);
+      padding:10px 12px;
+      outline:none;
+    }
+    textarea{min-height:80px; resize:vertical}
+
+    .meta{
+      display:flex; gap:10px; flex-wrap:wrap;
+      color:var(--muted2); font-size:12px;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:10px; margin-top:10px;
+    }
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .pill strong{color:var(--ink)}
+
+    .card{
+      background: rgba(12,19,41,.75);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+      padding:14px;
+    }
+    .card h3{margin:0 0 8px 0; font-size:16px}
+
+    /* ======= MELHORIAS DE LEITURA (v2) ======= */
+    .qtext{
+      white-space:pre-wrap;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      padding:14px;
+      color:#f2f6ff;
+      line-height:1.55;
+      font-size:16px;
+    }
+    @media (max-width: 520px){
+      .qtext{font-size:17px}
+    }
+
+    .options{display:grid; gap:10px; margin-top:12px}
+    .opt{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+    }
+    .opt:hover{border-color: rgba(77,163,255,.35); background: rgba(77,163,255,.06)}
+    .opt input{margin-top:5px; transform: scale(1.15);}
+    .opt .optText{font-size:15px; line-height:1.45; color: #eef3ff}
+    @media (max-width: 520px){
+      .opt .optText{font-size:16px}
+    }
+
+    .explain{
+      margin-top:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding:12px;
+      color:var(--muted);
+      white-space:pre-wrap;
+      display:none;
+      line-height:1.5;
+    }
+    .explain.show{display:block}
+
+    .taglist{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .tag{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(77,163,255,.25);
+      background: rgba(77,163,255,.10);
+      color:#cfe6ff;
+    }
+
+    .bar{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap;
+      margin-top:12px;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:12px;
+    }
+    .right{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
+    .status{
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted2);
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:12px;
+      background: rgba(0,0,0,.15);
+    }
+    .small{font-size:12px;color:var(--muted)}
+    .kpi{
+      display:grid; gap:10px;
+      grid-template-columns: repeat(2, 1fr);
+      margin-top:10px;
+    }
+    .kpi .box{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding:10px;
+    }
+    .kpi .box b{display:block; font-size:18px}
+    .kpi .box span{color:var(--muted2); font-size:12px}
+
+    .list{margin-top:10px; display:grid; gap:8px}
+    .list .item{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .item .left{display:flex; flex-direction:column; gap:2px}
+    .item .left .title{font-weight:800}
+    .item .left .sub{font-size:12px; color:var(--muted2)}
+    .badge{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--muted);
+      background: rgba(0,0,0,.12);
+    }
+    .badge.good{border-color: rgba(73,209,124,.35); background: rgba(73,209,124,.12); color:#c9ffe0}
+    .badge.bad{border-color: rgba(255,92,124,.35); background: rgba(255,92,124,.12); color:#ffd0da}
+    .badge.warn{border-color: rgba(255,204,102,.35); background: rgba(255,204,102,.12); color:#ffe9b5}
+
+    .hr{height:1px;background:rgba(255,255,255,.08); margin:12px 0}
+    .hide{display:none !important}
+    .mono{font-family:var(--mono)}
+
+    /* Home clean v2 */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+    .heroBox{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding:14px;
+    }
+    .heroTitle{font-size:16px;font-weight:900;margin:0 0 6px}
+    .heroLine{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    .quickRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">BTX</div>
+        <div>
+          <h1>BTX Provas</h1>
+          <p>Offline • Simulados • Correção • Estatísticas • (IA opcional)</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="primary" id="btnStart">Iniciar simulado</button>
+        <button class="ai" id="btnGenAI">Gerar questões (IA)</button>
+        <button id="btnStudy">Modo estudo</button>
+        <button id="btnManage">Banco</button>
+        <button class="danger" id="btnReset">Reset</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- ESQUERDA -->
+      <section class="panel" id="leftPanel">
+        <h2>Configuração & Filtros</h2>
+
+        <div class="field">
+          <label>Buscar (texto livre)</label>
+          <input id="qSearch" type="text" placeholder="Ex.: pré-natal, IAM, nefrolitíase, pediatria..." />
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1">
+            <label>Assunto</label>
+            <select id="qTopic"></select>
+          </div>
+          <div class="field" style="flex:1">
+            <label>Dificuldade</label>
+            <select id="qDiff">
+              <option value="">Todas</option>
+              <option value="facil">Fácil</option>
+              <option value="media">Média</option>
+              <option value="dificil">Difícil</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1">
+            <label>Tag</label>
+            <select id="qTag"></select>
+          </div>
+          <div class="field" style="flex:1">
+            <label>Fonte</label>
+            <select id="qSource"></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1">
+            <label>Nº de questões</label>
+            <input id="qCount" type="number" min="1" max="200" value="10" />
+          </div>
+          <div class="field" style="flex:1">
+            <label>Tempo (min) — 0 = livre</label>
+            <input id="qTime" type="number" min="0" max="600" value="20" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="primary" id="btnApply">Aplicar</button>
+          <button id="btnShuffle">Sortear</button>
+        </div>
+
+        <div class="meta">
+          <div class="pill">Banco: <strong id="metaTotal">0</strong></div>
+          <div class="pill">Filtradas: <strong id="metaFiltered">0</strong></div>
+          <div class="pill">Acertos: <strong id="metaHits">0</strong></div>
+          <div class="pill">Erros: <strong id="metaMiss">0</strong></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>IA (geração rápida) — v2</h2>
+        <div class="heroBox">
+          <p class="small" style="margin:0 0 10px">
+            Agora é só “casca”: ainda não chama servidor. Mas já deixa o fluxo pronto.
+          </p>
+
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Tema (assunto)</label>
+              <input id="aiTopic" type="text" placeholder="Ex.: Obstetrícia" />
+            </div>
+            <div class="field" style="flex:1">
+              <label>Subtema (opcional)</label>
+              <input id="aiSubtopic" type="text" placeholder="Ex.: Pré-natal" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Nível</label>
+              <select id="aiLevel">
+                <option value="basico">Básico</option>
+                <option value="medio" selected>Médio</option>
+                <option value="avancado">Avançado</option>
+              </select>
+            </div>
+            <div class="field" style="flex:1">
+              <label>Estilo</label>
+              <select id="aiStyle">
+                <option value="direta">Direta</option>
+                <option value="caso" selected>Caso clínico</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Quantidade</label>
+              <input id="aiQty" type="number" min="1" max="50" value="5" />
+            </div>
+            <div class="field" style="flex:1">
+              <label>Fonte (rótulo)</label>
+              <input id="aiSourceLabel" type="text" placeholder="Ex.: IA-BTX" value="IA-BTX" />
+            </div>
+          </div>
+
+          <div class="row">
+            <button class="ai" id="btnAIMock">Gerar (mock agora)</button>
+            <button id="btnAIFillFromFilters">Puxar do filtro</button>
+          </div>
+
+          <div class="meta" style="border-top:0;padding-top:0;margin-top:8px">
+            <div class="pill">Status: <strong id="aiStatus">pronto</strong></div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Estatísticas rápidas</h2>
+        <div class="kpi">
+          <div class="box">
+            <b id="kpiAccuracy">0%</b>
+            <span>Taxa de acerto</span>
+          </div>
+          <div class="box">
+            <b id="kpiAnswered">0</b>
+            <span>Respondidas</span>
+          </div>
+          <div class="box">
+            <b id="kpiStreak">0</b>
+            <span>Sequência</span>
+          </div>
+          <div class="box">
+            <b id="kpiWeak">—</b>
+            <span>Assunto fraco</span>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Por assunto</h2>
+        <div class="list" id="topicStats"></div>
+      </section>
+
+      <!-- DIREITA -->
+      <main class="panel" id="mainPanel">
+
+        <!-- HOME -->
+        <div id="viewHome">
+          <div class="card">
+            <div class="hero">
+              <div class="heroBox">
+                <p class="heroTitle">Ritual rápido (5 minutos)</p>
+                <p class="heroLine">1) Filtra um tema • 2) Faz 10 questões • 3) Corrige • 4) Revisa erros.</p>
+                <p class="heroLine">Usa a IA só pra “alimentar” o banco quando faltar questão boa.</p>
+
+                <div class="quickRow">
+                  <button class="primary" id="homeStart">Iniciar simulado</button>
+                  <button class="ai" id="homeGenAI">Gerar questões (IA)</button>
+                  <button id="homeStudy">Modo estudo</button>
+                </div>
+              </div>
+
+              <div class="heroBox">
+                <p class="heroTitle">Status</p>
+                <p class="heroLine mono" id="homeStatus">Carregando…</p>
+                <div class="hr"></div>
+                <p class="small" style="margin:0">
+                  Dica: o que vende isso aqui não é “bonito” — é o aluno ver progresso em 7 dias.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h3>Prévia do banco</h3>
+            <div class="small">A lista é uma amostra. O simulado usa teus filtros.</div>
+            <div class="list" id="previewList" style="margin-top:10px"></div>
+          </div>
+        </div>
+
+        <!-- SIMULADO -->
+        <div id="viewExam" class="hide">
+          <div class="card">
+            <div class="bar" style="border-top:0;padding-top:0;margin-top:0">
+              <div class="status">Simulado: <span id="examIndex">1</span>/<span id="examTotal">0</span> • <span id="examModeLabel" class="mono">EXAM</span></div>
+              <div class="right">
+                <div class="status" id="timer">⏱ 00:00</div>
+                <button id="btnFlag">Marcar p/ revisar</button>
+                <button class="danger" id="btnFinish">Finalizar</button>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <h3 id="qTitle">Questão</h3>
+            <div class="small" id="qMeta">—</div>
+            <div class="qtext" id="qText">…</div>
+
+            <div class="options" id="qOptions"></div>
+
+            <div class="taglist" id="qTags"></div>
+
+            <div class="explain" id="qExplain"></div>
+
+            <div class="bar">
+              <div class="status" id="answerStatus">Sem resposta</div>
+              <div class="right">
+                <button id="btnPrev">Anterior</button>
+                <button class="primary" id="btnNext">Próxima</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h3>Mapa do simulado</h3>
+            <div class="small">Clica pra navegar. ✳ = marcada pra revisar.</div>
+            <div class="row" id="examMap" style="margin-top:10px"></div>
+          </div>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div id="viewResult" class="hide">
+          <div class="card">
+            <h3>Resultado</h3>
+            <div class="qtext" id="resultSummary">…</div>
+            <div class="bar">
+              <div class="status" id="resultStatus">—</div>
+              <div class="right">
+                <button id="btnReviewErrors">Revisar erros</button>
+                <button class="good" id="btnNewExam">Novo simulado</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h3>Caderno do simulado</h3>
+            <div class="list" id="resultList" style="margin-top:10px"></div>
+          </div>
+        </div>
+
+        <!-- GERENCIAR BANCO -->
+        <div id="viewManage" class="hide">
+          <div class="card">
+            <h3>Banco de Questões</h3>
+            <div class="small">Importa JSON, exporta teu banco, adiciona questão manualmente.</div>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <button class="primary" id="btnExport">Exportar banco (JSON)</button>
+              <label class="btn" for="fileImport" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer">
+                Importar banco (JSON)
+              </label>
+              <input id="fileImport" type="file" accept="application/json" class="hide" />
+              <button class="danger" id="btnClearBank">Apagar banco</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <h2>Adicionar questão</h2>
+            <div class="row">
+              <div class="field" style="flex:1">
+                <label>ID (único)</label>
+                <input id="mId" type="text" placeholder="Ex.: MED-OBST-001" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Assunto</label>
+                <input id="mTopic" type="text" placeholder="Ex.: Obstetrícia" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field" style="flex:1">
+                <label>Fonte</label>
+                <input id="mSource" type="text" placeholder="Ex.: Apostila / Prova / Manual" />
+              </div>
+              <div class="field" style="flex:1">
+                <label>Dificuldade</label>
+                <select id="mDiff">
+                  <option value="facil">Fácil</option>
+                  <option value="media" selected>Média</option>
+                  <option value="dificil">Difícil</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Enunciado</label>
+              <textarea id="mText" placeholder="Cole aqui o enunciado completo…"></textarea>
+            </div>
+
+            <div class="field">
+              <label>Alternativas (uma por linha)</label>
+              <textarea id="mOptions" placeholder="A) ...&#10;B) ...&#10;C) ...&#10;D) ...&#10;E) ..."></textarea>
+            </div>
+
+            <div class="row">
+              <div class="field" style="flex:1">
+                <label>Gabarito (A/B/C/D/E)</label>
+                <input id="mAnswer" type="text" maxlength="1" placeholder="Ex.: C" />
+              </div>
+              <div class="field" style="flex:2">
+                <label>Tags (vírgula)</label>
+                <input id="mTags" type="text" placeholder="Ex.: pré-natal, vitaminas, MS, SUS" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Explicação (opcional)</label>
+              <textarea id="mExplain" placeholder="Por que a resposta é essa?"></textarea>
+            </div>
+
+            <div class="row">
+              <button class="primary" id="btnAddQ">Adicionar</button>
+              <button id="btnBackHome">Voltar</button>
+            </div>
+
+            <div class="hr"></div>
+            <h2>Lista do banco</h2>
+            <div class="list" id="bankList"></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+<script>
+/** ===============================
+ *  BTX PROVAS v2
+ *  - Layout: leitura melhor + IA placeholder
+ *  - Lógica base mantida (simulado, stats, banco)
+ * =============================== */
+
+const LS = {
+  BANK: "btx_provas_bank_v2",
+  STATS: "btx_provas_stats_v2",
+  SESSION: "btx_provas_session_v2",
+};
+
+const DEFAULT_BANK = [
+  {
+    id: "MED-OBST-001",
+    topic: "Obstetrícia",
+    source: "Treino",
+    diff: "media",
+    text: "Gestante G1P0, 10 semanas, sem comorbidades. Qual suplementação é recomendada de rotina no pré-natal?",
+    options: [
+      "A) Vitamina A em altas doses e iodo sempre",
+      "B) Ácido fólico no 1º trimestre (idealmente desde o pré-concepcional) e ferro conforme avaliação/rotina local",
+      "C) Apenas cálcio para todas as gestantes",
+      "D) Vitamina D é contraindicada na gestação",
+      "E) Não se recomenda suplementação nenhuma em gestação normal"
+    ],
+    answer: "B",
+    tags: ["pré-natal","suplementação","ácido fólico"],
+    explain: "Em geral, ácido fólico é recomendado no período periconcepcional e 1º trimestre para prevenção de defeitos do tubo neural. Ferro varia conforme protocolo local e avaliação de anemia/risco."
+  },
+  {
+    id: "MED-CLIN-002",
+    topic: "Clínica Médica",
+    source: "Treino",
+    diff: "facil",
+    text: "Dor torácica típica, supra de ST em parede inferior. Conduta inicial MAIS adequada?",
+    options: [
+      "A) Alta e retorno ambulatorial",
+      "B) Analgésico e observar 24h sem ECG seriado",
+      "C) Iniciar protocolo de SCA com reperfusão conforme tempo e disponibilidade (hemodinâmica/trombólise)",
+      "D) Apenas antibiótico",
+      "E) Apenas hidratação e antiemético"
+    ],
+    answer: "C",
+    tags: ["IAM","SCA","ECG"],
+    explain: "IAM com supra é emergência tempo-dependente: reperfusão o mais rápido possível + medidas iniciais conforme protocolo."
+  },
+  {
+    id: "MED-PED-003",
+    topic: "Pediatria",
+    source: "Treino",
+    diff: "media",
+    text: "Criança com febre alta, toxemia, rigidez de nuca. Qual hipótese e conduta imediata?",
+    options: [
+      "A) Gastroenterite; hidratação oral e alta",
+      "B) Meningite; iniciar antibiótico empírico após avaliação e coleta de exames conforme estabilidade",
+      "C) Otite; só analgésico",
+      "D) Apendicite; cirurgia imediata",
+      "E) Asma; broncodilatador"
+    ],
+    answer: "B",
+    tags: ["meningite","emergência"],
+    explain: "Quadro sugere meningite: tratar rápido. Em instabilidade, antibiótico não deve atrasar. Coleta de hemoculturas e PL conforme segurança."
+  },
+  {
+    id: "MED-GO-004",
+    topic: "Ginecologia",
+    source: "Treino",
+    diff: "dificil",
+    text: "Sangramento uterino anormal em mulher 46a, ciclos irregulares, IMC alto. Próximo passo MAIS importante para afastar gravidade?",
+    options: [
+      "A) Apenas AINE e observar",
+      "B) Anticoncepcional combinado sem investigação",
+      "C) Avaliar endométrio (ex.: biópsia/US conforme risco) para excluir hiperplasia/câncer",
+      "D) Antibiótico",
+      "E) Excluir gravidez é desnecessário"
+    ],
+    answer: "C",
+    tags: ["SUA","endométrio","risco"],
+    explain: "Em >45 anos e fatores de risco, é crucial avaliar endométrio para excluir hiperplasia/neoplasia, além de excluir gestação e outras causas."
+  }
+];
+
+const DEFAULT_STATS = {
+  answered: 0,
+  correct: 0,
+  wrong: 0,
+  streak: 0,
+  byTopic: {}
+};
+
+let bank = [];
+let stats = {};
+let filtered = [];
+let mode = "home";
+
+let exam = {
+  active: false,
+  items: [],
+  answers: {},
+  index: 0,
+  startedAt: null,
+  durationSec: 0,
+  timerId: null,
+  timeLimitSec: 0,
+};
+
+const $ = (id)=>document.getElementById(id);
+
+function loadAll(){
+  bank = safeParse(localStorage.getItem(LS.BANK)) ?? DEFAULT_BANK;
+  stats = safeParse(localStorage.getItem(LS.STATS)) ?? DEFAULT_STATS;
+  const sess = safeParse(localStorage.getItem(LS.SESSION));
+  if(sess && sess.active) exam = sess;
+  persist();
+}
+function persist(){
+  localStorage.setItem(LS.BANK, JSON.stringify(bank));
+  localStorage.setItem(LS.STATS, JSON.stringify(stats));
+  localStorage.setItem(LS.SESSION, JSON.stringify(exam));
+}
+function safeParse(str){ try{ return JSON.parse(str); }catch(e){ return null; } }
+function uniq(arr){ return Array.from(new Set(arr)); }
+function norm(s){ return (s||"").toString().trim().toLowerCase(); }
+
+function initUI(){
+  wireTopButtons();
+  rebuildFilters();
+  applyFilters();
+  renderStats();
+  renderPreview();
+  renderBankList();
+  setView("home");
+  $("homeStatus").textContent = `Banco carregado: ${bank.length} questões.`;
+  $("aiStatus").textContent = "pronto";
+}
+
+function wireTopButtons(){
+  $("btnStart").onclick = ()=>startExamFromFilters();
+  $("homeStart").onclick = ()=>startExamFromFilters();
+  $("btnStudy").onclick = ()=>startStudyMode();
+  $("homeStudy").onclick = ()=>startStudyMode();
+
+  $("btnManage").onclick = ()=>{ setView("manage"); renderBankList(); };
+  $("btnReset").onclick = ()=>resetAll();
+
+  // IA
+  $("btnGenAI").onclick = ()=>focusAI();
+  $("homeGenAI").onclick = ()=>focusAI();
+  $("btnAIMock").onclick = ()=>generateAIMock();
+  $("btnAIFillFromFilters").onclick = ()=>fillAIFromFilters();
+
+  // filtros
+  $("btnApply").onclick = ()=>{ applyFilters(); renderPreview(); };
+  $("btnShuffle").onclick = ()=>{ applyFilters(true); renderPreview(); };
+
+  // simulado
+  $("btnPrev").onclick = ()=>gotoExamIndex(exam.index-1);
+  $("btnNext").onclick = ()=>gotoExamIndex(exam.index+1);
+  $("btnFlag").onclick = ()=>toggleFlag();
+  $("btnFinish").onclick = ()=>finishExam();
+
+  // resultado
+  $("btnNewExam").onclick = ()=>{ endTimer(); clearSession(); setView("home"); };
+  $("btnReviewErrors").onclick = ()=>reviewErrors();
+
+  // banco
+  $("btnExport").onclick = ()=>exportBank();
+  $("fileImport").addEventListener("change", importBank);
+  $("btnClearBank").onclick = ()=>clearBank();
+  $("btnAddQ").onclick = ()=>addQuestionManual();
+  $("btnBackHome").onclick = ()=>setView("home");
+
+  // busca live
+  $("qSearch").addEventListener("input", ()=>{ applyFilters(); renderPreview(); });
+  $("qTopic").addEventListener("change", ()=>{ applyFilters(); renderPreview(); });
+  $("qDiff").addEventListener("change", ()=>{ applyFilters(); renderPreview(); });
+  $("qTag").addEventListener("change", ()=>{ applyFilters(); renderPreview(); });
+  $("qSource").addEventListener("change", ()=>{ applyFilters(); renderPreview(); });
+}
+
+function focusAI(){
+  // Leva atenção para o painel de IA (esquerda)
+  $("aiStatus").textContent = "configura e clica em gerar";
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function fillAIFromFilters(){
+  // Puxa assunto do filtro atual
+  const topic = $("qTopic").value || "";
+  $("aiTopic").value = topic;
+  $("aiSubtopic").value = "";
+  $("aiLevel").value = "medio";
+  $("aiStyle").value = "caso";
+  $("aiQty").value = 5;
+  $("aiSourceLabel").value = "IA-BTX";
+  $("aiStatus").textContent = "preenchido";
+}
+
+function rebuildFilters(){
+  const topics = ["", ...uniq(bank.map(q=>q.topic).filter(Boolean)).sort()];
+  const tags = ["", ...uniq(bank.flatMap(q=>q.tags||[])).sort()];
+  const sources = ["", ...uniq(bank.map(q=>q.source).filter(Boolean)).sort()];
+
+  $("qTopic").innerHTML = topics.map(t=>`<option value="${escapeHtml(t)}">${t===""?"Todos":escapeHtml(t)}</option>`).join("");
+  $("qTag").innerHTML = tags.map(t=>`<option value="${escapeHtml(t)}">${t===""?"Todas":escapeHtml(t)}</option>`).join("");
+  $("qSource").innerHTML = sources.map(s=>`<option value="${escapeHtml(s)}">${s===""?"Todas":escapeHtml(s)}</option>`).join("");
+
+  $("metaTotal").textContent = bank.length;
+}
+
+function applyFilters(shuffle=false){
+  const s = norm($("qSearch").value);
+  const topic = $("qTopic").value;
+  const diff = $("qDiff").value;
+  const tag = $("qTag").value;
+  const source = $("qSource").value;
+
+  filtered = bank.filter(q=>{
+    if(topic && q.topic !== topic) return false;
+    if(diff && q.diff !== diff) return false;
+    if(tag && !(q.tags||[]).includes(tag)) return false;
+    if(source && q.source !== source) return false;
+    if(s){
+      const blob = norm(q.text)+" "+norm(q.topic)+" "+norm(q.source)+" "+norm((q.tags||[]).join(" "))+" "+norm((q.options||[]).join(" "));
+      if(!blob.includes(s)) return false;
+    }
+    return true;
+  });
+
+  if(shuffle) filtered = shuffleArr(filtered);
+
+  $("metaFiltered").textContent = filtered.length;
+  renderStats();
+}
+
+function shuffleArr(a){
+  const arr = a.slice();
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function setView(v){
+  mode = v;
+  $("viewHome").classList.toggle("hide", v!=="home");
+  $("viewExam").classList.toggle("hide", v!=="exam");
+  $("viewResult").classList.toggle("hide", v!=="result");
+  $("viewManage").classList.toggle("hide", v!=="manage");
+
+  if(exam.active){
+    $("btnStart").textContent = "Voltar ao simulado";
+    $("btnStart").onclick = ()=>{ setView("exam"); renderExam(); renderExamMap(); startTimer(); };
+  } else {
+    $("btnStart").textContent = "Iniciar simulado";
+    $("btnStart").onclick = ()=>startExamFromFilters();
+  }
+}
+
+function startExamFromFilters(){
+  applyFilters(true);
+  const count = Math.max(1, parseInt($("qCount").value||"10",10));
+  const timeMin = Math.max(0, parseInt($("qTime").value||"0",10));
+  if(filtered.length === 0){
+    alert("Nenhuma questão com esses filtros. Ajusta e tenta de novo.");
+    return;
+  }
+  const pick = filtered.slice(0, Math.min(count, filtered.length)).map(q=>q.id);
+
+  exam.active = true;
+  exam.items = pick;
+  exam.answers = {};
+  exam.index = 0;
+  exam.startedAt = Date.now();
+  exam.durationSec = 0;
+  exam.timeLimitSec = timeMin*60;
+
+  persist();
+  setView("exam");
+  renderExam();
+  startTimer();
+  renderExamMap();
+}
+
+function startStudyMode(){
+  applyFilters(true);
+  if(filtered.length === 0){
+    alert("Nenhuma questão com esses filtros. Ajusta e tenta de novo.");
+    return;
+  }
+  const pick = filtered.map(q=>q.id);
+
+  exam.active = true;
+  exam.items = pick;
+  exam.answers = {};
+  exam.index = 0;
+  exam.startedAt = Date.now();
+  exam.durationSec = 0;
+  exam.timeLimitSec = 0;
+
+  persist();
+  setView("exam");
+  renderExam();
+  endTimer();
+  $("timer").textContent = "📚 estudo";
+  renderExamMap();
+}
+
+function getQ(id){ return bank.find(q=>q.id===id); }
+
+function renderExam(){
+  const qid = exam.items[exam.index];
+  const q = getQ(qid);
+  if(!q){
+    alert("Questão não encontrada. Possível banco alterado. Reiniciando…");
+    clearSession();
+    setView("home");
+    return;
+  }
+
+  $("examIndex").textContent = exam.index+1;
+  $("examTotal").textContent = exam.items.length;
+  $("examModeLabel").textContent = (exam.timeLimitSec>0) ? "EXAM" : "STUDY";
+
+  $("qTitle").textContent = `Questão ${exam.index+1}`;
+  $("qMeta").textContent = `${q.topic} • ${labelDiff(q.diff)} • ${q.source} • ID: ${q.id}`;
+  $("qText").textContent = q.text;
+
+  $("qTags").innerHTML = (q.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join("");
+
+  const saved = exam.answers[qid]?.choice || "";
+  $("qOptions").innerHTML = q.options.map((opt, idx)=>{
+    const letter = String.fromCharCode(65+idx);
+    const checked = (saved === letter) ? "checked" : "";
+    const clean = opt.replace(/^[A-E]\)\s*/,"");
+    return `
+      <label class="opt">
+        <input type="radio" name="opt" value="${letter}" ${checked} />
+        <div>
+          <div class="mono"><b>${letter}</b></div>
+          <div class="optText">${escapeHtml(clean)}</div>
+        </div>
+      </label>`;
+  }).join("");
+
+  $("qExplain").classList.remove("show");
+  $("qExplain").textContent = q.explain ? ("Explicação:\n" + q.explain) : "Sem explicação cadastrada.";
+
+  updateAnswerStatus();
+
+  const flagged = !!exam.answers[qid]?.flagged;
+  $("btnFlag").textContent = flagged ? "Desmarcar revisão" : "Marcar p/ revisar";
+
+  document.querySelectorAll('input[name="opt"]').forEach(r=>{
+    r.addEventListener("change", (e)=>{
+      const choice = e.target.value;
+      if(!exam.answers[qid]) exam.answers[qid] = {choice:"", flagged:false};
+      exam.answers[qid].choice = choice;
+      persist();
+      renderExamMap();
+
+      if(exam.timeLimitSec===0){
+        showCorrection(q, choice);
+      }
+      updateAnswerStatus();
+    });
+  });
+
+  if(exam.timeLimitSec===0 && saved){
+    showCorrection(q, saved);
+  }
+
+  $("btnPrev").disabled = exam.index===0;
+  $("btnNext").disabled = exam.index===exam.items.length-1;
+
+  persist();
+}
+
+function labelDiff(d){
+  return d==="facil"?"Fácil":(d==="media"?"Média":"Difícil");
+}
+
+function updateAnswerStatus(){
+  const qid = exam.items[exam.index];
+  const saved = exam.answers[qid]?.choice || "";
+  const flagged = !!exam.answers[qid]?.flagged;
+  $("answerStatus").textContent = saved ? `Respondida: ${saved} ${flagged?"• marcada":""}` : (flagged ? "Sem resposta • marcada" : "Sem resposta");
+}
+
+function showCorrection(q, choice){
+  const correct = q.answer.toUpperCase();
+  const ok = (choice === correct);
+  $("qExplain").classList.add("show");
+  $("qExplain").textContent =
+    `Gabarito: ${correct}\nSua resposta: ${choice}\nResultado: ${ok ? "✅ ACERTOU" : "❌ ERROU"}\n\n` +
+    (q.explain ? q.explain : "Sem explicação cadastrada.");
+
+  const qid = q.id;
+  const alreadyCounted = exam.answers[qid]?.counted;
+  if(!alreadyCounted){
+    applyStats(q.topic, ok);
+    if(!exam.answers[qid]) exam.answers[qid] = {choice:"", flagged:false};
+    exam.answers[qid].counted = true;
+    persist();
+    renderStats();
+  }
+}
+
+function toggleFlag(){
+  const qid = exam.items[exam.index];
+  if(!exam.answers[qid]) exam.answers[qid] = {choice:"", flagged:false};
+  exam.answers[qid].flagged = !exam.answers[qid].flagged;
+  persist();
+  renderExamMap();
+  renderExam();
+}
+
+function gotoExamIndex(i){
+  if(i<0 || i>=exam.items.length) return;
+  exam.index = i;
+  persist();
+  renderExam();
+  renderExamMap();
+}
+
+function renderExamMap(){
+  const box = $("examMap");
+  box.innerHTML = "";
+  exam.items.forEach((qid, idx)=>{
+    const a = exam.answers[qid]?.choice;
+    const flagged = !!exam.answers[qid]?.flagged;
+
+    let cls = "badge";
+    if(flagged) cls = "badge warn";
+    else if(a) cls = "badge good";
+
+    const el = document.createElement("button");
+    el.className = cls;
+    el.textContent = flagged ? `${idx+1} ✳` : `${idx+1}${a? " ✓":""}`;
+    el.style.cursor = "pointer";
+    el.onclick = ()=>gotoExamIndex(idx);
+    box.appendChild(el);
+  });
+}
+
+function startTimer(){
+  endTimer();
+  if(!exam.active || exam.timeLimitSec<=0) return;
+
+  exam.timerId = setInterval(()=>{
+    const elapsed = Math.floor((Date.now() - exam.startedAt)/1000);
+    exam.durationSec = elapsed;
+    const remaining = Math.max(0, exam.timeLimitSec - elapsed);
+    $("timer").textContent = "⏱ " + formatTime(remaining);
+    if(remaining<=0){
+      endTimer();
+      finishExam(true);
+    }
+    persist();
+  }, 500);
+}
+function endTimer(){
+  if(exam.timerId){
+    clearInterval(exam.timerId);
+    exam.timerId = null;
+  }
+}
+function formatTime(sec){
+  const m = Math.floor(sec/60);
+  const s = sec%60;
+  return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+function finishExam(timeUp=false){
+  endTimer();
+  let correct=0, wrong=0, blank=0;
+
+  exam.items.forEach(qid=>{
+    const q = getQ(qid);
+    const choice = exam.answers[qid]?.choice || "";
+    if(!choice){ blank++; return; }
+    const ok = (choice === q.answer.toUpperCase());
+    if(ok) correct++; else wrong++;
+    if(!exam.answers[qid]?.counted){
+      applyStats(q.topic, ok);
+      exam.answers[qid].counted = true;
+    }
+  });
+
+  persist();
+  renderStats();
+
+  const total = exam.items.length;
+  const answered = correct + wrong;
+  const acc = answered ? Math.round((correct/answered)*100) : 0;
+
+  const header = [
+    `Total: ${total}`,
+    `Respondidas: ${answered}`,
+    `Em branco: ${blank}`,
+    `Acertos: ${correct}`,
+    `Erros: ${wrong}`,
+    `Acurácia (sobre respondidas): ${acc}%`,
+    (exam.timeLimitSec>0 ? `Tempo: ${formatTime(exam.durationSec)} / limite ${formatTime(exam.timeLimitSec)}` : `Tempo: ${formatTime(exam.durationSec)}`)
+  ].join("\n");
+
+  $("resultSummary").textContent = header + (timeUp ? "\n\n⏰ Tempo esgotou." : "");
+  $("resultStatus").textContent = acc>=70 ? "Tá ficando perigoso. Mantém o ritmo." : "Subida rápida: caderno de erros + repetição por assunto.";
+  renderResultList();
+  setView("result");
+  persist();
+}
+
+function renderResultList(){
+  const box = $("resultList");
+  box.innerHTML = "";
+
+  exam.items.forEach((qid, idx)=>{
+    const q = getQ(qid);
+    const choice = exam.answers[qid]?.choice || "";
+    const ok = choice ? (choice===q.answer.toUpperCase()) : false;
+
+    const item = document.createElement("div");
+    item.className = "item";
+    const badgeCls = choice ? (ok ? "badge good" : "badge bad") : "badge warn";
+    const badgeTxt = choice ? (ok ? "Acertou" : "Errou") : "Em branco";
+    item.innerHTML = `
+      <div class="left">
+        <div class="title">#${idx+1} • ${escapeHtml(q.topic)} • ${escapeHtml(q.source)}</div>
+        <div class="sub">${escapeHtml(q.text.slice(0, 120))}${q.text.length>120?"…":""}</div>
+      </div>
+      <div class="${badgeCls}">${badgeTxt}</div>
+    `;
+    item.style.cursor="pointer";
+    item.onclick = ()=>{
+      setView("exam");
+      exam.index = idx;
+      persist();
+      renderExam();
+      renderExamMap();
+      const explain = $("qExplain");
+      explain.classList.add("show");
+      explain.textContent = `Gabarito: ${q.answer.toUpperCase()}\nSua resposta: ${choice || "—"}\n\n` + (q.explain||"Sem explicação cadastrada.");
+    };
+    box.appendChild(item);
+  });
+}
+
+function reviewErrors(){
+  const badIds = exam.items.filter(qid=>{
+    const q = getQ(qid);
+    const choice = exam.answers[qid]?.choice || "";
+    if(!choice) return true;
+    return choice !== q.answer.toUpperCase();
+  });
+
+  if(badIds.length===0){
+    alert("Sem erros pra revisar 😅");
+    return;
+  }
+
+  exam.active = true;
+  exam.items = badIds;
+  exam.index = 0;
+  exam.startedAt = Date.now();
+  exam.durationSec = 0;
+  exam.timeLimitSec = 0;
+  persist();
+
+  setView("exam");
+  renderExam();
+  $("timer").textContent = "🧠 revisão";
+  renderExamMap();
+}
+
+function applyStats(topic, ok){
+  stats.answered++;
+  if(ok){
+    stats.correct++;
+    stats.streak = (stats.streak||0)+1;
+  } else {
+    stats.wrong++;
+    stats.streak = 0;
+  }
+  if(!stats.byTopic[topic]) stats.byTopic[topic] = {answered:0, correct:0, wrong:0};
+  stats.byTopic[topic].answered++;
+  if(ok) stats.byTopic[topic].correct++;
+  else stats.byTopic[topic].wrong++;
+  persist();
+}
+
+function renderStats(){
+  $("metaHits").textContent = stats.correct || 0;
+  $("metaMiss").textContent = stats.wrong || 0;
+
+  const answered = stats.answered || 0;
+  const acc = answered ? Math.round((stats.correct/answered)*100) : 0;
+  $("kpiAccuracy").textContent = acc + "%";
+  $("kpiAnswered").textContent = answered;
+  $("kpiStreak").textContent = stats.streak || 0;
+
+  let weak = "—";
+  let weakVal = 999;
+  Object.entries(stats.byTopic||{}).forEach(([t, v])=>{
+    if(v.answered>=3){
+      const a = v.correct / v.answered;
+      if(a < weakVal){
+        weakVal = a;
+        weak = t;
+      }
+    }
+  });
+  $("kpiWeak").textContent = weak;
+
+  const box = $("topicStats");
+  box.innerHTML = "";
+  const topics = Object.entries(stats.byTopic||{})
+    .sort((a,b)=> (b[1].answered - a[1].answered));
+
+  if(topics.length===0){
+    box.innerHTML = `<div class="small">Ainda sem histórico. Faz um simulado.</div>`;
+    return;
+  }
+
+  topics.slice(0, 12).forEach(([t, v])=>{
+    const rate = v.answered ? Math.round((v.correct/v.answered)*100) : 0;
+    let badge = "badge warn";
+    if(rate>=70) badge="badge good";
+    if(rate<50) badge="badge bad";
+
+    const row = document.createElement("div");
+    row.className = "item";
+    row.innerHTML = `
+      <div class="left">
+        <div class="title">${escapeHtml(t)}</div>
+        <div class="sub">${v.correct} acertos • ${v.wrong} erros • ${v.answered} total</div>
+      </div>
+      <div class="${badge}">${rate}%</div>
+    `;
+    box.appendChild(row);
+  });
+}
+
+function renderPreview(){
+  const box = $("previewList");
+  box.innerHTML = "";
+  const sample = (filtered.length? filtered : bank).slice(0, 8);
+
+  sample.forEach((q)=>{
+    const item = document.createElement("div");
+    item.className = "item";
+    item.innerHTML = `
+      <div class="left">
+        <div class="title">${escapeHtml(q.topic)} • ${labelDiff(q.diff)} • ${escapeHtml(q.source)}</div>
+        <div class="sub">${escapeHtml(q.text.slice(0, 120))}${q.text.length>120?"…":""}</div>
+      </div>
+      <div class="badge">${escapeHtml((q.tags||[])[0] || "—")}</div>
+    `;
+    box.appendChild(item);
+  });
+}
+
+function renderBankList(){
+  const box = $("bankList");
+  if(!box) return;
+  box.innerHTML = "";
+
+  bank.slice().sort((a,b)=>a.id.localeCompare(b.id)).forEach(q=>{
+    const item = document.createElement("div");
+    item.className = "item";
+    item.innerHTML = `
+      <div class="left">
+        <div class="title">${escapeHtml(q.id)} • ${escapeHtml(q.topic)} • ${labelDiff(q.diff)}</div>
+        <div class="sub">${escapeHtml(q.text.slice(0, 120))}${q.text.length>120?"…":""}</div>
+      </div>
+      <div class="right">
+        <button class="danger" data-del="${escapeHtml(q.id)}">Excluir</button>
+      </div>
+    `;
+    box.appendChild(item);
+  });
+
+  box.querySelectorAll("button[data-del]").forEach(btn=>{
+    btn.onclick = ()=>{
+      const id = btn.getAttribute("data-del");
+      if(confirm("Excluir questão "+id+"?")){
+        bank = bank.filter(q=>q.id!==id);
+        rebuildFilters();
+        applyFilters();
+        renderPreview();
+        renderBankList();
+        persist();
+      }
+    };
+  });
+}
+
+function exportBank(){
+  const blob = new Blob([JSON.stringify(bank, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "btx_provas_banco.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importBank(ev){
+  const file = ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const data = JSON.parse(reader.result);
+      if(!Array.isArray(data)) throw new Error("JSON precisa ser um array de questões.");
+      data.forEach(q=>{
+        if(!q.id || !q.text || !q.options || !q.answer) throw new Error("Questão inválida: falta id/text/options/answer");
+      });
+      bank = data;
+      rebuildFilters();
+      applyFilters();
+      renderPreview();
+      renderBankList();
+      persist();
+      alert("Banco importado: "+bank.length+" questões.");
+    }catch(e){
+      alert("Falha ao importar: "+e.message);
+    }finally{
+      ev.target.value = "";
+    }
+  };
+  reader.readAsText(file, "utf-8");
+}
+
+function clearBank(){
+  if(!confirm("Apagar TODO o banco de questões?")) return;
+  bank = [];
+  rebuildFilters();
+  applyFilters();
+  renderPreview();
+  renderBankList();
+  persist();
+}
+
+function addQuestionManual(){
+  const id = $("mId").value.trim();
+  const topic = $("mTopic").value.trim();
+  const source = $("mSource").value.trim() || "Manual";
+  const diff = $("mDiff").value;
+  const text = $("mText").value.trim();
+  const optionsRaw = $("mOptions").value.trim();
+  const answer = ($("mAnswer").value.trim().toUpperCase() || "").slice(0,1);
+  const tags = $("mTags").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const explain = $("mExplain").value.trim();
+
+  if(!id || !topic || !text || !optionsRaw || !answer){
+    alert("Faltou: ID, Assunto, Enunciado, Alternativas, Gabarito.");
+    return;
+  }
+  if(bank.some(q=>q.id===id)){
+    alert("ID já existe.");
+    return;
+  }
+  const options = optionsRaw.split("\n").map(l=>l.trim()).filter(Boolean);
+  if(options.length < 2){
+    alert("Coloca pelo menos 2 alternativas.");
+    return;
+  }
+  const idx = answer.charCodeAt(0)-65;
+  if(idx<0 || idx>=options.length){
+    alert("Gabarito inválido. A até "+String.fromCharCode(65+options.length-1));
+    return;
+  }
+
+  bank.push({id, topic, source, diff, text, options, answer, tags, explain});
+  persist();
+  rebuildFilters();
+  applyFilters();
+  renderPreview();
+  renderBankList();
+
+  ["mId","mTopic","mSource","mText","mOptions","mAnswer","mTags","mExplain"].forEach(k=>$(k).value="");
+  $("mDiff").value="media";
+  alert("Questão adicionada ✅");
+}
+
+function clearSession(){
+  exam = { active:false, items:[], answers:{}, index:0, startedAt:null, durationSec:0, timerId:null, timeLimitSec:0 };
+  persist();
+}
+
+function resetAll(){
+  if(!confirm("Reset geral? (histórico e sessão)")) return;
+  stats = JSON.parse(JSON.stringify(DEFAULT_STATS));
+  clearSession();
+  persist();
+  renderStats();
+  alert("Reset feito.");
+}
+
+function escapeHtml(s){
+  return (s??"").toString()
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* ===============================
+ * IA MOCK (v2)
+ * - só pra testar fluxo e layout
+ * - depois substituímos por fetch no servidor
+ * =============================== */
+
+function levelToDiff(level){
+  if(level==="basico") return "facil";
+  if(level==="avancado") return "dificil";
+  return "media";
+}
+
+function generateAIMock(){
+  const topic = $("aiTopic").value.trim() || "Tema Geral";
+  const sub = $("aiSubtopic").value.trim();
+  const level = $("aiLevel").value;
+  const style = $("aiStyle").value;
+  const qty = Math.max(1, parseInt($("aiQty").value||"5",10));
+  const source = $("aiSourceLabel").value.trim() || "IA-BTX";
+  const diff = levelToDiff(level);
+
+  $("aiStatus").textContent = "gerando…";
+
+  const now = Date.now();
+  const newQs = [];
+  for(let i=0;i<qty;i++){
+    const id = `IA-${now}-${i+1}`;
+    const themeLine = sub ? `${topic} — ${sub}` : topic;
+    const stem = (style==="caso")
+      ? `Caso clínico (${level}): Paciente com queixa relacionada a ${themeLine}. Qual a conduta mais adequada?`
+      : `Questão direta (${level}): Sobre ${themeLine}, assinale a alternativa correta.`;
+
+    newQs.push({
+      id,
+      topic,
+      source,
+      diff,
+      text: stem + "\n\n(⚠ mock: ainda não é IA real. Serve só pra testar fluxo.)",
+      options: [
+        "A) Alternativa A (mock)",
+        "B) Alternativa B (mock)",
+        "C) Alternativa C (mock)",
+        "D) Alternativa D (mock)",
+        "E) Alternativa E (mock)"
+      ],
+      answer: "C",
+      tags: sub ? [sub] : [topic],
+      explain: "Mock: quando ligarmos a IA, isso vira uma explicação clínica real."
+    });
+  }
+
+  // adiciona ao banco
+  bank = [...newQs, ...bank];
+  persist();
+  rebuildFilters();
+  applyFilters();
+  renderPreview();
+  renderBankList();
+
+  $("aiStatus").textContent = `mock gerado: +${qty} questões`;
+  $("homeStatus").textContent = `Banco atualizado: ${bank.length} questões (inclui mock).`;
+
+  // sugestão: já filtra no tema gerado
+  $("qTopic").value = topic;
+  applyFilters();
+  renderPreview();
+}
+
+loadAll();
+initUI();
+
+if(exam.active && exam.items?.length){
+  $("homeStatus").textContent = "Tem um simulado em andamento salvo. Clica “Voltar ao simulado”.";
+  $("btnStart").textContent = "Voltar ao simulado";
+  $("btnStart").onclick = ()=>{ setView("exam"); renderExam(); renderExamMap(); startTimer(); };
+}
+</script>
+</body>
+</html>
